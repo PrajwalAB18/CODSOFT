@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+            max-width: 300px;
+            width: 100%;
+        }
+        .display {
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: right;
+            font-size: 2em;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .button {
+            background: #f1f1f1;
+            border: none;
+            padding: 20px;
+            font-size: 1.5em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .button:hover {
+            background: #ddd;
+        }
+        .button.operator {
+            background: #fe9241;
+            color: white;
+        }
+        .button.operator:hover {
+            background: #e87c1c;
+        }
+        .button.double {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div id="display" class="display">0</div>
+        <div class="buttons">
+            <button class="button double" onclick="clearDisplay()">C</button>
+            <button class="button operator" onclick="appendOperator('/')">/</button>
+            <button class="button operator" onclick="appendOperator('*')">*</button>
+            <button class="button operator" onclick="appendOperator('-')">-</button>
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button operator" onclick="appendOperator('+')">+</button>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button double operator" onclick="calculateResult()">=</button>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button double" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendDecimal()">.</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let operator = '';
+        let firstOperand = '';
+        let secondOperand = '';
+
+        function clearDisplay() {
+            display.textContent = '0';
+            currentInput = '';
+            operator = '';
+            firstOperand = '';
+            secondOperand = '';
+        }
+
+        function appendNumber(number) {
+            if (currentInput.length < 16) {
+                currentInput += number;
+                display.textContent = currentInput;
+            }
+        }
+
+        function appendOperator(op) {
+            if (currentInput !== '') {
+                if (firstOperand === '') {
+                    firstOperand = currentInput;
+                } else if (operator !== '') {
+                    calculateResult();
+                }
+                operator = op;
+                currentInput = '';
+            }
+        }
+
+        function appendDecimal() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                display.textContent = currentInput;
+            }
+        }
+
+        function calculateResult() {
+            if (firstOperand !== '' && currentInput !== '' && operator !== '') {
+                secondOperand = currentInput;
+                let result;
+                switch (operator) {
+                    case '+':
+                        result = parseFloat(firstOperand) + parseFloat(secondOperand);
+                        break;
+                    case '-':
+                        result = parseFloat(firstOperand) - parseFloat(secondOperand);
+                        break;
+                    case '*':
+                        result = parseFloat(firstOperand) * parseFloat(secondOperand);
+                        break;
+                    case '/':
+                        result = parseFloat(firstOperand) / parseFloat(secondOperand);
+                        break;
+                    default:
+                        return;
+                }
+                display.textContent = result;
+                currentInput = result;
+                operator = '';
+                firstOperand = '';
+                secondOperand = '';
+            }
+        }
+    </script>
+</body>
+</html>
