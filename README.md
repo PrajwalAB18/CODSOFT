@@ -19,7 +19,7 @@ Clone the Repository:
 
 bash
 Copy code
-git clone https://github.com/PrajwalAB18/calculator.git
+git clone https://github.com/PrajwalAB18/CODSOFT/blob/main/calculator.html
 Navigate to the Project Directory:
 
 bash
